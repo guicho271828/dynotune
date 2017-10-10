@@ -16,7 +16,8 @@
   :description "Test system of dynotune"
   :license "LLGPL"
   :depends-on (:dynotune
-               :fiveam)
+               :fiveam
+               :named-readtables)
   :components ((:module "t"
                 :components
                 ((:file "package"))))
