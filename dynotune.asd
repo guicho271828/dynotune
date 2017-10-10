@@ -21,6 +21,7 @@
               (:file "optimizers/differential-evolution")
               (:file "optimizers/grid-search")
               (:file "optimizers/hill-climbing")
+              (:file "optimizers/particle-swarm")
               (:file "optimizers/random-search")
               (:file "optimizers/simulated-annealing"))
  :description "Automated parameter tuner for CL"
