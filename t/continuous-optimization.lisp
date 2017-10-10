@@ -2,10 +2,12 @@
 (in-suite :dynotune)
 (named-readtables:in-readtable coefficient-helper)
 
+;;; evolutionary algorithm benchmark functions
+
 (declaim (ftype (function ((double-float -5.12d0 5.12d0)    (double-float -5.12d0 5.12d0)) double-float) rastrigin))
 (declaim (ftype (function ((double-float -5d0    5d0)       (double-float -5d0   5d0))     double-float) ackley))
-(declaim (ftype (function (double-float                 double-float)              double-float) sphere))
-(declaim (ftype (function (double-float                 double-float)              double-float) rosenbrock))
+(declaim (ftype (function ((double-float -100d0  100d0)     (double-float -100d0 100d0)) double-float) sphere))
+(declaim (ftype (function ((double-float -100d0  100d0)     (double-float -100d0 100d0)) double-float) rosenbrock))
 (declaim (ftype (function ((double-float -4.5d0  4.5d0)     (double-float -4.5d0 4.5d0)) double-float) beale))
 (declaim (ftype (function ((double-float -2d0    2d0)       (double-float -2d0   2d0))   double-float) goldstein-price))
 (declaim (ftype (function ((double-float -10d0   10d0)      (double-float -10d0  10d0))  double-float) booth))
@@ -153,7 +155,27 @@
         _y_y_y_y _-16_y_y _5_y)
      2))
 
+;;; test
 
-
-
-
+(test dynotune
+  (dolist (fn '(rastrigin
+               ackley
+               sphere
+               rosenbrock
+               beale
+               goldstein-price
+               booth
+               bukin-n6
+               matyas
+               levi
+               three-hump-camel
+               easom
+               cross-in-tray
+               eggholder
+               holder-table
+               mccormick
+               schaffer-n2
+               schaffer-n4
+               styblinski-tang))
+    (dolist (optimizer (list (random-search 100)))
+      (finishes (print (tune fn optimizer))))))

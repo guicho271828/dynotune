@@ -49,6 +49,15 @@
 
 (defun parse-generator (form)
   (match form
+    ;; commented out until this is absolutely necessary
+    ;; ((single-float-type (or '* (= most-negative-single-float)) (or '* (= most-positive-single-float)))
+    ;;  (make-instance 'single-float :low (/ most-negative-single-float 4) :high (/ most-positive-single-float 4)))
+    ;; ((double-float-type (or '* (= most-negative-double-float)) (or '* (= most-positive-double-float)))
+    ;;  (make-instance 'double-float :low (/ most-negative-double-float 4) :high (/ most-positive-double-float 4)))
+    ;; ((short-float-type (or '* (= most-negative-short-float)) (or '* (= most-positive-short-float)))
+    ;;  (make-instance 'short-float :low (/ most-negative-short-float 4) :high (/ most-positive-short-float 4)))
+    ;; ((long-float-type (or '* (= most-negative-long-float)) (or '* (= most-positive-long-float)))
+    ;;  (make-instance 'long-float :low (/ most-negative-long-float 4) :high (/ most-positive-long-float 4)))
     ((single-float-type low high)
      (make-instance 'single-float :low low :high high))
     ((double-float-type low high)

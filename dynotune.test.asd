@@ -16,10 +16,8 @@
  :serial t
  :pathname "t/"
  :components ((:file "package")
-              (:file "continuous")
-              (:file "run"))
+              (:file "continuous-optimization"))
  :perform (test-op :after (op c)
            (eval
-            (read-from-string "(let ((res (5am:run :dynotune)))
-     (explain! res)
-     (every #'fiveam::TEST-PASSED-P res))"))))
+            (read-from-string
+             "(let ((res (5am:run :dynotune))) (every #'fiveam::TEST-PASSED-P res))"))))
