@@ -17,6 +17,7 @@
               :type-r)
  :pathname "src/"
  :components ((:file "package")
-              (:file "generator"))
+              (:file "generator")
+              (:file "optimizers/random-search"))
  :description "Automated parameter tuner for CL"
  :in-order-to ((test-op (test-op :dynotune.test))))

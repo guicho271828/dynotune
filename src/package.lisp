@@ -36,8 +36,9 @@
     (handler-case
         (ematch (introspect-environment:function-type function)
           ((function-type (and args-types (type list)))
-           (setf parameters (mapcar #'parse-generator args-types))))
+           (setf parameters args-types)))
       (match-error ()
-        (error "could not guess the generators from the function information!"))))
-  (funcall method function parameters))
+        (error "could not get the parameter information from the function!"))))
+
+  (funcall method function (mapcar #'parse-generator parameters)))
 
