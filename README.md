@@ -62,16 +62,27 @@ For example, gradient descent works only for floats.
 `COMMON-KEYS` denotes keyword arguments `(predicate #'<) keep-results`.
 
 + `(random-search max-trials &key [COMMON-KEYS])`
-    + supports all generators.
+  + supports all generators.
 + `(grid-search &key [COMMON-KEYS])` 
-    + supports all finite generators (non-floats).
+  + supports all finite generators (non-floats).
 + `(hill-climbing &key [COMMON-KEYS])`
-    +  supports all finite generators (non-floats).
+  + Evaluate the neighbors of the current state and move to the first neighbor that improves the result.
+    Also known as first-choice hill-climbing.
+  + supports all finite generators (non-floats).
++ `(hill-climbing2 &key [COMMON-KEYS])`
+  + Evaluate ALL neighbors of the current state and move to the BEST neighbor.
+  + supports all finite generators (non-floats).
 + `(random-restart &key [COMMON-KEYS] (restart 10) (optimizer (hill-climbing)))`
     + Iterates over `optimizer` for `restart` times from the
       different random initial parameter. Also known as *Shotgun hill climbing*.
       It is a surprisingly effective algorithm in many cases.
 
+Work in progress (should be implemented in a few days, send me a message if I forgot this --- 2017/10/11)
+
++ Differential Evolution
++ Simulated Annealing
++ Gradient Descent
++ ~~CMA-ES~~ --- is NOT appropriate for "work out of box" situation. It requires lots of hyperparameters by itself.
 
 ## Dependencies
 This library is at least tested on implementation listed below:

@@ -27,7 +27,9 @@
    #:discrete
    #:hill-climbing
    #:random-restart
-   #:hill-climbing2))
+   #:hill-climbing2
+   #:cma-es
+   #:de))
 (in-package :dynotune)
 
 ;; blah blah blah.
