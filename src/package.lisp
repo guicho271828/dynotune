@@ -5,11 +5,13 @@
 
 (in-package :cl-user)
 (defpackage dynotune
-  (:use :cl :iterate :alexandria :trivia))
+  (:use :cl :iterate :alexandria :trivia
+        :introspect-environment)
+  (:export))
 (in-package :dynotune)
 
 ;; blah blah blah.
 
 
-(defun tune (function parameters method)
+(defun minimize (function &optional parameters method)
   )

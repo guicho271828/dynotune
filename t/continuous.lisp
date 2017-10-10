@@ -155,9 +155,7 @@
         _y_y_y_y _-16_y_y _5_y)
      2))
 
-(test dynotune
 
-  )
 
 
 

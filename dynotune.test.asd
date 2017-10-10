@@ -16,7 +16,8 @@
  :serial t
  :pathname "t/"
  :components ((:file "package")
-              (:file "continuous"))
+              (:file "continuous")
+              (:file "run"))
  :perform (test-op :after (op c)
            (eval
             (read-from-string "(let ((res (5am:run :dynotune)))

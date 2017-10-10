@@ -1,5 +1,4 @@
 
-((:dir :src
-       (:package)
-       (:rest)))
+((:package)
+ (:rest))
 

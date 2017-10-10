@@ -12,8 +12,11 @@
  :license "LLGPL"
  :depends-on (:iterate
               :alexandria
-              :trivia)
- :components ((:module "src"
-               :components ((:file "package"))))
+              :trivia
+              :introspect-environment
+              :type-r)
+ :pathname "src/"
+ :components ((:file "package")
+              (:file "generator"))
  :description "Automated parameter tuner for CL"
  :in-order-to ((test-op (test-op :dynotune.test))))
