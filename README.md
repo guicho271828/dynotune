@@ -45,7 +45,7 @@ For example, gradient descent works only for floats.
 
 ## Available optimizer
 
-+ `(random-search max-trials &key :mode :keep-results)` --- supports all generators.
++ `(random-search max-trials &key (mode :minimize) keep-results)` --- supports all generators.
 
 
 ## Dependencies
