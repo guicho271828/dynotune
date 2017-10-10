@@ -4,7 +4,7 @@
 exec ros -Q -- $0 "$@"
 |#
 
-(ql:quickload :fiveam)
+(ql:quickload :dynotune.test)
 
 (defun main (&rest argv)
   (declare (ignorable argv))
@@ -12,11 +12,10 @@ exec ros -Q -- $0 "$@"
                      (progn
                        (asdf:load-system :dynotune.test)
                        (eval
- (read-from-string
-  "(let ((res (5am:run :dynotune)))
-     (explain! res)
-     (every #'fiveam::TEST-PASSED-P res))"))
-)
+                        (read-from-string
+                          "(let ((res (5am:run :dynotune)))
+                             (fiveam:explain! res)
+                             (every #'fiveam::TEST-PASSED-P res))")))
                    (serious-condition (c)
                      (describe c)
                      (uiop:quit 2)))
