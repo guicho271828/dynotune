@@ -16,7 +16,8 @@
  :serial t
  :pathname "t/"
  :components ((:file "package")
-              (:file "continuous-optimization"))
+              (:file "continuous-optimization")
+              (:file "discrete-optimization"))
  :perform (test-op :after (op c)
            (eval
             (read-from-string

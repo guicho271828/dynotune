@@ -174,7 +174,7 @@
 
 ;;; test
 
-(test dynotune
+(test continuous
   (dolist (fn '(rastrigin
                 ackley
                 sphere

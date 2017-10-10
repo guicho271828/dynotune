@@ -45,6 +45,14 @@
   (with-slots (objects) set
     (random-elt objects)))
 
+(defgeneric all (finite-set))
+(defmethod all ((set member))
+  (with-slots (objects) set
+    objects))
+(defmethod all ((set integer))
+  (with-slots (low high) set
+    (iota (- high low) :start low)))
+
 ;;; specifiers
 
 (defun parse-generator (form)

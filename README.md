@@ -61,6 +61,7 @@ Examples are in `t/`.
 ## Available optimizers
 
 + `(random-search max-trials &key (mode :minimize) keep-results)` --- supports all generators.
++ `(grid-search &key (mode :minimize) keep-results)` --- supports all finite generators (non-floats).
 
 
 ## Dependencies

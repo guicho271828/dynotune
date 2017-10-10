@@ -21,7 +21,9 @@
    #:categorical
    #:ordinal
    #:interval
-   #:random-search))
+   #:random-search
+   #:all
+   #:grid-search))
 (in-package :dynotune)
 
 ;; blah blah blah.

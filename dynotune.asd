@@ -18,6 +18,7 @@
  :pathname "src/"
  :components ((:file "package")
               (:file "generator")
+              (:file "optimizers/grid-search")
               (:file "optimizers/hill-climbing")
               (:file "optimizers/random-search"))
  :description "Automated parameter tuner for CL"
