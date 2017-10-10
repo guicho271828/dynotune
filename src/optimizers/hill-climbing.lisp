@@ -2,7 +2,7 @@
 (in-package :dynotune)
 
 
-(defun random-search (max-trials &key (mode :minimize) keep-results)
+(defun hill-climbing (max-trials &optional (mode :minimize) keep-results)
   (lambda (function generators)
     (let (acc)
       (values

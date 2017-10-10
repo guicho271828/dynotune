@@ -4,26 +4,25 @@
 (named-readtables:in-readtable coefficient-helper)
 
 (test dynotune
-  (dolist (f '((rastrigin        (double-float -5.12 5.12)    (double-float -5.12 5.12))
-               (ackley           (double-float -5    5)       (double-float -5   5))
-               (sphere           double-float                 double-float)
-               (rosenbrock       double-float                 double-float)
-               (beale            (double-float -4.5  4.5)     (double-float -4.5 4.5))
-               (goldstein-price  (double-float -2    2)       (double-float -2   2))
-               (booth            (double-float -10   10)      (double-float -10  10))
-               (bukin-n6         (double-float -15   -5)      (double-float -3   3))
-               (matyas           (double-float -10   10)      (double-float -10  10))
-               (levi             (double-float -10   10)      (double-float -10  10))
-               (three-hump-camel (double-float -5    5)       (double-float -5   5))
-               (easom            (double-float -100  100)     (double-float -100 100))
-               (cross-in-tray    (double-float -10   10)      (double-float -10  10))
-               (eggholder        (double-float -512  512)     (double-float -512 512))
-               (holder-table     (double-float -10   10)      (double-float -10  10))
-               (mccormick        (double-float -1.5  4)       (double-float -3   4))
-               (schaffer-n2      (double-float -100  100)     (double-float -100 100))
-               (schaffer-n4      (double-float -100  100)     (double-float -100 100))
-               (styblinski-tang  (double-float -5    5)       (double-float -5   5))))
-    (destructuring-bind (fn &rest ranges)
-        (dolist (optimizer '())
-          (tune fn ranges optimizer)))))
+  (dolist (f '(rastrigin
+               ackley
+               sphere
+               rosenbrock
+               beale
+               goldstein-price
+               booth
+               bukin-n6
+               matyas
+               levi
+               three-hump-camel
+               easom
+               cross-in-tray
+               eggholder
+               holder-table
+               mccormick
+               schaffer-n2
+               schaffer-n4
+               styblinski-tang))
+    (dolist (optimizer (list (random-search 100)))
+      (tune fn optimizer ranges))))
 

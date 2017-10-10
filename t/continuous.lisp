@@ -2,27 +2,25 @@
 (in-suite :dynotune)
 (named-readtables:in-readtable coefficient-helper)
 
-(declaim (ftype (function (double-float double-float) double-float)
-                rastrigin
-                ackley
-                sphere
-                rosenbrock
-                beale
-                goldstein-price
-                booth
-                bukin-n6
-                matyas
-                levi
-                three-hump-camel
-                easom
-                cross-in-tray
-                eggholder
-                holder-table
-                mccormick
-                schaffer-n2
-                schaffer-n4
-                styblinski-tang
-                ))
+(declaim (ftype (function ((double-float -5.12d0 5.12d0)    (double-float -5.12d0 5.12d0)) double-float) rastrigin))
+(declaim (ftype (function ((double-float -5d0    5d0)       (double-float -5d0   5d0))     double-float) ackley))
+(declaim (ftype (function (double-float                 double-float)              double-float) sphere))
+(declaim (ftype (function (double-float                 double-float)              double-float) rosenbrock))
+(declaim (ftype (function ((double-float -4.5d0  4.5d0)     (double-float -4.5d0 4.5d0)) double-float) beale))
+(declaim (ftype (function ((double-float -2d0    2d0)       (double-float -2d0   2d0))   double-float) goldstein-price))
+(declaim (ftype (function ((double-float -10d0   10d0)      (double-float -10d0  10d0))  double-float) booth))
+(declaim (ftype (function ((double-float -15d0   -5d0)      (double-float -3d0   3d0))   double-float) bukin-n6))
+(declaim (ftype (function ((double-float -10d0   10d0)      (double-float -10d0  10d0))  double-float) matyas))
+(declaim (ftype (function ((double-float -10d0   10d0)      (double-float -10d0  10d0))  double-float) levi))
+(declaim (ftype (function ((double-float -5d0    5d0)       (double-float -5d0   5d0))   double-float) three-hump-camel))
+(declaim (ftype (function ((double-float -100d0  100d0)     (double-float -100d0 100d0)) double-float) easom))
+(declaim (ftype (function ((double-float -10d0   10d0)      (double-float -10d0  10d0))  double-float) cross-in-tray))
+(declaim (ftype (function ((double-float -512d0  512d0)     (double-float -512d0 512d0)) double-float) eggholder))
+(declaim (ftype (function ((double-float -10d0   10d0)      (double-float -10d0  10d0))  double-float) holder-table))
+(declaim (ftype (function ((double-float -1.5d0  4d0)       (double-float -3d0   4d0))   double-float) mccormick))
+(declaim (ftype (function ((double-float -100d0  100d0)     (double-float -100d0 100d0)) double-float) schaffer-n2))
+(declaim (ftype (function ((double-float -100d0  100d0)     (double-float -100d0 100d0)) double-float) schaffer-n4))
+(declaim (ftype (function ((double-float -5d0    5d0)       (double-float -5d0   5d0))   double-float) styblinski-tang))
 
 (defun rastrigin (x y)
   (declare (optimize (speed 3)))

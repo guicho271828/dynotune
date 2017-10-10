@@ -8,7 +8,8 @@
   (:use :cl :iterate :alexandria :trivia
         ;; :introspect-environment
         :type-r)
-  (:shadow :double-float
+  (:shadow :set
+           :double-float
            :single-float
            :short-float
            :long-float
@@ -19,7 +20,8 @@
    #:tune
    #:categorical
    #:ordinal
-   #:interval))
+   #:interval
+   #:random-search))
 (in-package :dynotune)
 
 ;; blah blah blah.
@@ -28,7 +30,7 @@
 (defun ^2 (x)
   (* x x))
 
-(defun tune (function &optional parameters method)
+(defun tune (function &optional method parameters)
   (unless parameters
     (assert (typep function '(or symbol cons))
             nil "parameters are missing, and ~a is not of type '(or symbol cons). Cannot guess the input region!"

@@ -29,11 +29,11 @@
 (defclass ordinal-member     (member ordinal) ())
 (defclass interval-member    (member interval) ())
 
-(defclass integer (interval) () (:default-initargs :type cl:integer))
-(defclass single-float (continuous) ()  (:default-initargs :type cl:single-float))
-(defclass double-float (continuous) () (:default-initargs :type cl:double-float))
-(defclass short-float (continuous) () (:default-initargs :type cl:short-float))
-(defclass long-float (continuous) () (:default-initargs :type cl:long-float))
+(defclass integer (interval) () (:default-initargs :type 'cl:integer))
+(defclass single-float (continuous) ()  (:default-initargs :type 'cl:single-float))
+(defclass double-float (continuous) () (:default-initargs :type 'cl:double-float))
+(defclass short-float (continuous) () (:default-initargs :type 'cl:short-float))
+(defclass long-float (continuous) () (:default-initargs :type 'cl:long-float))
 
 (defgeneric generate (set))
 
@@ -60,11 +60,12 @@
     ((integer-subtype low high)
      (make-instance 'integer :low low :high high))
     ((list* (or 'cl:member 'categorical) objects) ;member is a synonym for categorical
-     (make-instance 'categorical-member :objects members))
+     (make-instance 'categorical-member :objects objects))
     ((list* 'ordinal objects)
-     (make-instance 'ordinal-member :objects members))
+     (make-instance 'ordinal-member :objects objects))
     ((list* 'interval objects)
-     (make-instance 'interval-member :objects members))
+     (make-instance 'interval-member :objects objects))
     (_
      (error "Failed to parse the generator specifier form:~% ~a~%
-should be of integer, short/single/double/long-float, member, categorical, ordinal, interval." form))))
+should be of integer, short/single/double/long-float, member, categorical, ordinal, interval."
+            form))))

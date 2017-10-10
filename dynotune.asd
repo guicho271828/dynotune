@@ -18,6 +18,7 @@
  :pathname "src/"
  :components ((:file "package")
               (:file "generator")
+              (:file "optimizers/hill-climbing")
               (:file "optimizers/random-search"))
  :description "Automated parameter tuner for CL"
  :in-order-to ((test-op (test-op :dynotune.test))))
