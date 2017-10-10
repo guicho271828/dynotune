@@ -82,6 +82,9 @@ Work in progress (should be implemented in a few days, send me a message if I fo
 + Differential Evolution
 + Simulated Annealing
 + Gradient Descent
++ tabu-search
++ GA and real-valued GA
++ PSO and ACO
 + ~~CMA-ES~~ --- is NOT appropriate for "work out of box" situation. It requires lots of hyperparameters by itself.
 
 ## Dependencies
