@@ -43,7 +43,11 @@ For example, gradient descent works only for floats.
 `parameters` is optional when the compiler can deduce the argument types of the `function`.
 `ftype` information is quite useful because on SBCL it can retrieve the type information.
 
-## Available optimizer
+## Examples
+
+Examples are in `t/`.
+
+## Available optimizers
 
 + `(random-search max-trials &key (mode :minimize) keep-results)` --- supports all generators.
 
