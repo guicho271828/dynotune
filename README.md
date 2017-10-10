@@ -1,15 +1,12 @@
 
 # Dynotune - Automated parameter tuner for CL
 
-This library provides an easy-to-use interface to the optimization algorithms.
-It is primarily intended for tuning the meta-parameter of a particular function, solver or system.
+This library provides an easy-to-use interface to black-box optimization algorithms.
 
-It focuses on the usability and should "work out of the box". It should also
-support many algorithms, but it should not force the users to understand them.
-It could even automatically select the algorithm to use.
-
-Although the tuner should be interruptible and multi-threaded, this greatly
-depends on the implementation of each optimizer.
++ Intended for tuning the meta-parameter of a particular function/solver/system.
++ Focuses on the usability and should "work out of the box".
++ It should also support many algorithms, but it should not force the users to understand them.
++ Although the tuner should be interruptible and multi-threaded, this depends on the implementation of each optimizer.
 
 ## Usage
 
