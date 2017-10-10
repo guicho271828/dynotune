@@ -1,5 +1,5 @@
 
-# Dynotune - Automated parameter tuner for CL
+# Dynotune - Automated parameter tuner for CL [![Build Status](https://travis-ci.org/guicho271828/dynotune.svg?branch=master)](https://travis-ci.org/guicho271828/dynotune)
 
 This library provides an easy-to-use interface to black-box optimization algorithms.
 
@@ -22,7 +22,9 @@ NIL
 TEST> 
 ```
 
-## Usage
+More examples are in `t/`.
+
+## API
 
 Primary API is through a function `tune`.
 
@@ -54,9 +56,6 @@ For example, gradient descent works only for floats.
 `parameters` is optional when the compiler can deduce the argument types of the `function`.
 `ftype` information is quite useful because on SBCL it can retrieve the type information.
 
-## Examples
-
-Examples are in `t/`.
 
 ## Available optimizers
 
