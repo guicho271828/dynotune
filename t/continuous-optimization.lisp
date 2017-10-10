@@ -54,20 +54,22 @@
 
 (defun goldstein-price (x y)
   (declare (optimize (speed 3)))
-  (* (+ 1 (* (^2 (+ x y 1))
-             (+ 19
-                _-14_x
-                _3_x_x
-                _-14_y
-                _6_x_y
-                _3_y_y)))
-     (+ 30 (* (^2 (+ _2_x _-3_y))
-              (+ 18
-                 _-32_x
-                 _12_x_x
-                 _48_y
-                 _-36_x_y
-                 _27_y_y)))))
+  (- (* (+ 1 (* (^2 (+ x y 1))
+                (+ 19
+                   _-14_x
+                   _3_x_x
+                   _-14_y
+                   _6_x_y
+                   _3_y_y)))
+        (+ 30 (* (^2 (+ _2_x _-3_y))
+                 (+ 18
+                    _-32_x
+                    _12_x_x
+                    _48_y
+                    _-36_x_y
+                    _27_y_y))))
+     ;; make the optimal solution ~0
+     3))
 
 (defun booth (x y)
   (declare (optimize (speed 3)))
@@ -102,18 +104,22 @@
 
 (defun easom (x y)
   (declare (optimize (speed 3)))
-  (- (* (cos x)
-        (cos y)
-        (exp (- (+ (^2 (- x pi))
-                   (^2 (- y pi))))))))
+  (+ (- (* (cos x)
+           (cos y)
+           (exp (- (+ (^2 (- x pi))
+                      (^2 (- y pi)))))))
+     ;; make the optimal solution ~0
+     1))
 
 (defun cross-in-tray  (x y)
   (declare (optimize (speed 3)))
-  (* 0.0001
-     (expt (1+ (abs (* (sin x)
-                       (sin y)
-                       (exp (abs (- 100 (/ ^d pi)))))))
-           0.1)))
+  (+ (* 0.0001
+        (expt (1+ (abs (* (sin x)
+                          (sin y)
+                          (exp (abs (- 100 (/ ^d pi)))))))
+              0.1))
+     ;; make the optimal solution ~0
+     2.06261))
 
 (defun eggholder (x y)
   (declare (optimize (speed 3)))
@@ -122,13 +128,17 @@
         (sin (sqrt (abs (+ (/ x 2) y 47)))))
      (* -1
         x
-        (sin (sqrt (abs (- x y 47)))))))
+        (sin (sqrt (abs (- x y 47)))))
+     ;; make the optimal solution ~0
+     959.6407))
 
 (defun holder-table (x y)
   (declare (optimize (speed 3)))
-  (- (abs (* (sin x)
-             (cos y)
-             (exp (abs (1- (/ ^d pi))))))))
+  (+ (- (abs (* (sin x)
+                (cos y)
+                (exp (abs (1- (/ ^d pi)))))))
+     ;; make the optimal solution ~0
+     19.2085))
 
 (defun mccormick (x y)
   (declare (optimize (speed 3)))
@@ -136,7 +146,9 @@
      (^2 (- x y))
      _-1.5_x
      _2.5_y
-     1))
+     1
+     ;; make the optimal solution ~0
+     1.9133))
 
 (defun schaffer-n2 (x y)
   (declare (optimize (speed 3)))
@@ -148,13 +160,17 @@
   (declare (optimize (speed 3)))
   (+ 0.5
      (/ (- (^2 (cos (sin (abs (- _x_x _y_y))))) 0.5)
-        (^2 (1+ _0.001_(+ _x_x _y_y))))))
+        (^2 (1+ _0.001_(+ _x_x _y_y))))
+     ;; make the optimal solution ~0
+     -0.292579))
 
 (defun styblinski-tang (x y)
   (declare (optimize (speed 3)))
-  (/ (+ _x_x_x_x _-16_x_x _5_x
-        _y_y_y_y _-16_y_y _5_y)
-     2))
+  (+ (/ (+ _x_x_x_x _-16_x_x _5_x
+           _y_y_y_y _-16_y_y _5_y)
+        2)
+     ;; make the optimal solution ~0
+     78.33232))
 
 ;;; test
 
