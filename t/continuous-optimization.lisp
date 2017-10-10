@@ -3,6 +3,7 @@
 (named-readtables:in-readtable coefficient-helper)
 
 ;;; evolutionary algorithm benchmark functions
+;;; https://en.wikipedia.org/wiki/Test_functions_for_optimization
 
 (declaim (ftype (function ((double-float -5.12d0 5.12d0)    (double-float -5.12d0 5.12d0)) double-float) rastrigin))
 (declaim (ftype (function ((double-float -5d0    5d0)       (double-float -5d0   5d0))     double-float) ackley))

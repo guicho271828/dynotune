@@ -18,8 +18,6 @@
 
 ;; run test with (run! test-name) 
 
-;; https://en.wikipedia.org/wiki/Test_functions_for_optimization
-
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defun read-coefficient (stream char)
     (let ((current (read-preserving-whitespace stream t nil))
