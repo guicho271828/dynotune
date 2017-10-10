@@ -26,7 +26,8 @@
    #:grid-search
    #:discrete
    #:hill-climbing
-   #:random-restart))
+   #:random-restart
+   #:hill-climbing2))
 (in-package :dynotune)
 
 ;; blah blah blah.

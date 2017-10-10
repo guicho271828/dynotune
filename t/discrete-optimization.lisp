@@ -199,7 +199,9 @@
     (dolist (optimizer (list (random-search 100)
                              (grid-search)
                              (hill-climbing)
-                             (random-restart :optimizer (hill-climbing))))
+                             (hill-climbing2)
+                             (random-restart :optimizer (hill-climbing))
+                             (random-restart :optimizer (hill-climbing2))))
       (finishes
         (print
          (multiple-value-list
