@@ -9,3 +9,7 @@
 (in-package :dynotune)
 
 ;; blah blah blah.
+
+
+(defun tune (function parameters method)
+  )
