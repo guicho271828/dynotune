@@ -7,11 +7,12 @@
 (defpackage dynotune
   (:use :cl :iterate :alexandria :trivia
         :introspect-environment)
-  (:export))
+  (:export
+   #:tune))
 (in-package :dynotune)
 
 ;; blah blah blah.
 
 
-(defun minimize (function &optional parameters method)
+(defun tune (function &optional parameters method)
   )

@@ -25,5 +25,5 @@
                (styblinski-tang  (double-float -5    5)       (double-float -5   5))))
     (destructuring-bind (fn &rest ranges)
         (dolist (optimizer '())
-          (optimize fn ranges optimizer)))))
+          (tune fn ranges optimizer)))))
 
