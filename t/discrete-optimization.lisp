@@ -200,4 +200,8 @@
       (finishes
         (print
          (multiple-value-list
-          (tune fn optimizer)))))))
+          (tune fn optimizer))))))
+
+  (signals error
+    ;; because grid-search does not accept floats
+    (tune 'rastrigin (grid-search))))
