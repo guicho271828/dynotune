@@ -6,9 +6,20 @@
 (in-package :cl-user)
 (defpackage dynotune
   (:use :cl :iterate :alexandria :trivia
-        :introspect-environment)
+        ;; :introspect-environment
+        :type-r)
+  (:shadow :double-float
+           :single-float
+           :short-float
+           :long-float
+           :integer
+           :float
+           :member)
   (:export
-   #:tune))
+   #:tune
+   #:categorical
+   #:ordinal
+   #:interval))
 (in-package :dynotune)
 
 ;; blah blah blah.
@@ -16,3 +27,4 @@
 
 (defun tune (function &optional parameters method)
   )
+
