@@ -23,6 +23,7 @@
               (:file "optimizers/hill-climbing")
               (:file "optimizers/particle-swarm")
               (:file "optimizers/random-search")
-              (:file "optimizers/simulated-annealing"))
+              (:file "optimizers/simulated-annealing")
+              (:file "optimizers/tabu"))
  :description "Automated parameter tuner for CL"
  :in-order-to ((test-op (test-op :dynotune.test))))

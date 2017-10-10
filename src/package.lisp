@@ -30,7 +30,8 @@
    #:hill-climbing2
    #:cma-es
    #:de
-   #:pso))
+   #:pso
+   #:tabu))
 (in-package :dynotune)
 
 ;; blah blah blah.
