@@ -24,7 +24,20 @@
 
 ;; blah blah blah.
 
+(declaim (ftype (function (cl:double-float) cl:double-float) ^2))
+(defun ^2 (x)
+  (* x x))
 
 (defun tune (function &optional parameters method)
-  )
+  (unless parameters
+    (assert (typep function '(or symbol cons))
+            nil "parameters are missing, and ~a is not of type '(or symbol cons). Cannot guess the input region!"
+            function)
+    (handler-case
+        (ematch (introspect-environment:function-type function)
+          ((function-type (and args-types (type list)))
+           (setf parameters (mapcar #'parse-generator args-types))))
+      (match-error ()
+        (error "could not guess the generators from the function information!"))))
+  (funcall method function parameters))
 

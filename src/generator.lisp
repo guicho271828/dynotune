@@ -64,4 +64,7 @@
     ((list* 'ordinal objects)
      (make-instance 'ordinal-member :objects members))
     ((list* 'interval objects)
-     (make-instance 'interval-member :objects members))))
+     (make-instance 'interval-member :objects members))
+    (_
+     (error "Failed to parse the generator specifier form:~% ~a~%
+should be of integer, short/single/double/long-float, member, categorical, ordinal, interval." form))))
