@@ -2,6 +2,9 @@
 (in-package :dynotune)
 
 (defun hill-climbing (&key (predicate #'<) keep-results &allow-other-keys)
+  "Evaluate the neighbors of the current state and move to the best neighbor.
+In each neighbor, one of the parameters has the different value from the current state.
+The neighbor of a parameter is defined for each generator."
   (declare (boolean keep-results))
   (lambda (function generators)
     (assert (every (of-type 'discrete) generators))
@@ -9,16 +12,21 @@
            (best-result (apply function best-params))
            (acc (if keep-results (list best-params) nil)))
       (iter (for old-best = best-result)
-            (apply #'map-product
-                   (lambda (&rest parameters)
-                     (let ((result (apply function parameters)))
-                       (when keep-results
-                         (push (list result parameters) acc))
-                       (when (or (null best-result)
-                                 (funcall predicate result best-result))
-                         (setf best-result result
-                               best-params parameters))))
-                   (mapcar #'neighbor generators best-params))
+            (iter (for p in best-params)
+                  (for i from 0)
+                  (iter (for new-p in (neighbor (elt generators i) p))
+                        (for parameters =
+                             (append
+                              (subseq best-params 0 i)
+                              (list new-p)
+                              (subseq best-params (1+ i))))
+                        (let ((result (apply function parameters)))
+                          (when keep-results
+                            (push (list result parameters) acc))
+                          (when (or (null best-result)
+                                    (funcall predicate result best-result))
+                            (setf best-result result
+                                  best-params parameters)))))
             (while (or (null old-best) (funcall predicate best-result old-best))))
       (values best-result best-params acc))))
 
