@@ -196,7 +196,10 @@
                 ;; int-styblinski-tang
                 ))
     (print fn)
-    (dolist (optimizer (list (grid-search)))
+    (dolist (optimizer (list (random-search 100)
+                             (grid-search)
+                             (hill-climbing)
+                             (random-restart :optimizer (hill-climbing))))
       (finishes
         (print
          (multiple-value-list

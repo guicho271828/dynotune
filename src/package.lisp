@@ -23,7 +23,10 @@
    #:interval
    #:random-search
    #:all
-   #:grid-search))
+   #:grid-search
+   #:discrete
+   #:hill-climbing
+   #:random-restart))
 (in-package :dynotune)
 
 ;; blah blah blah.

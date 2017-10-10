@@ -35,6 +35,8 @@
 (defclass short-float (continuous) () (:default-initargs :type 'cl:short-float))
 (defclass long-float (continuous) () (:default-initargs :type 'cl:long-float))
 
+(deftype discrete () `(or member integer))
+
 (defgeneric generate (set))
 
 (defmethod generate ((set interval))
@@ -52,6 +54,24 @@
 (defmethod all ((set integer))
   (with-slots (low high) set
     (iota (- high low) :start low)))
+
+(defgeneric neighbor (finite-set current))
+(defmethod neighbor ((set categorical-member) current)
+  (all set))
+(defmethod neighbor ((set ordinal-member) current)
+  (with-slots (objects) set
+    (let ((pos (position current objects)))
+      (list (elt objects (1- pos)) (elt objects (1+ pos))))))
+(defmethod neighbor ((set integer) (current cl:integer))
+  (with-slots (low high) set
+    (let (acc)
+      (when (<= (1+ current) high)
+        (push (1+ current) acc))
+      (when (<= low (1- current))
+        (push (1- current) acc))
+      acc)))
+
+
 
 ;;; specifiers
 
