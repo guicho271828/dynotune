@@ -59,8 +59,18 @@ For example, gradient descent works only for floats.
 
 ## Available optimizers
 
-+ `(random-search max-trials &key (mode :minimize) keep-results)` --- supports all generators.
-+ `(grid-search &key (mode :minimize) keep-results)` --- supports all finite generators (non-floats).
+`COMMON-KEYS` denotes keyword arguments `(predicate #'<) keep-results`.
+
++ `(random-search max-trials &key [COMMON-KEYS])`
+    + supports all generators.
++ `(grid-search &key [COMMON-KEYS])` 
+    + supports all finite generators (non-floats).
++ `(hill-climbing &key [COMMON-KEYS])`
+    +  supports all finite generators (non-floats).
++ `(random-restart &key [COMMON-KEYS] (restart 10) (optimizer (hill-climbing)))`
+    + Iterates over `optimizer` for `restart` times from the
+      different random initial parameter. Also known as *Shotgun hill climbing*.
+      It is a surprisingly effective algorithm in many cases.
 
 
 ## Dependencies
