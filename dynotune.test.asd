@@ -12,12 +12,14 @@
  :license "LLGPL"
  :depends-on (:dynotune
               :fiveam
-              :named-readtables)
+              :named-readtables
+              :function-cache)
  :serial t
  :pathname "t/"
  :components ((:file "package")
               (:file "continuous-optimization")
-              (:file "discrete-optimization"))
+              (:file "discrete-optimization")
+              (:file "matrix-unroll"))
  :perform (test-op :after (op c)
            (eval
             (read-from-string
