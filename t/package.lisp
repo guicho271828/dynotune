@@ -48,3 +48,5 @@
 
 (define-constant e (exp 1.0d0))
 
+(print "Initializing an lparallel kernel")
+(setf lparallel:*kernel* (lparallel:make-kernel 2))

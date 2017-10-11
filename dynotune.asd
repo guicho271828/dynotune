@@ -14,7 +14,8 @@
               :alexandria
               :trivia
               :introspect-environment
-              :type-r)
+              :type-r
+              :lparallel)
  :pathname "src/"
  :components ((:file "package")
               (:file "generator")
