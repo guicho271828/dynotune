@@ -10,9 +10,18 @@ This library provides an easy-to-use interface to black-box optimization algorit
 + It should also support many algorithms, but it should not force the users to understand them.
 + Although the tuner should be interruptible and multi-threaded, this depends on the implementation of each optimizer.
 
-## Example
+## Examples
 
 ``` lisp
+TEST> (declaim (ftype (function ((integer -5 5)) integer) ^2-int))
+(^2-INT)
+TEST> (defun ^2-int (x) (* x x))
+^2-INT
+TEST> (tune '^2-int)
+0                          ; the value of (^2-int x)
+(0)                        ; the value of x
+NIL
+
 TEST> (declaim (ftype (function ((double-float -1d0 1d0)) (double-float -1d0 1d0)) ^2))
 ; -> (|^2|)
 TEST> (defun ^2 (x) (* x x))
@@ -21,6 +30,14 @@ TEST> (tune '^2 (random-search 100))
 2.9022303484219113d-4      ; the value of (^2 x)
 (0.017035933635765055d0)   ; the value of x
 NIL
+TEST> (tune '^2 (gradient-descent :stop (converged 0.00001) :lr 0.01))
+y=0.4514247786417396d0
+y=0.43356152678121396d0
+...
+y=2.614111503577354d-4
+y=2.5137626603901665d-4
+2.4173262119055042d-4
+(-0.015547752930586156d0)
 TEST> 
 ```
 
