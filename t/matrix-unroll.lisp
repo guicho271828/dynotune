@@ -174,7 +174,7 @@ The current index should be computed manually, which is base + offset.
                              (make-matrix 512 1024)
                              (make-matrix 1024 512)
                              (make-matrix 512 512)))))
-      (print (list ui uk uj '-> result))
+      (print (list ui uk uj :-> result))
       result)))
 
 ;;; test
