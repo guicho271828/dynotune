@@ -42,6 +42,8 @@ TEST>
 ```
 
 More examples are in `t/`.
+[optimization benchmark functions](https://github.com/guicho271828/dynotune/blob/master/t/continuous-optimization.lisp),
+[matrix gemm unrolling](https://github.com/guicho271828/dynotune/blob/master/t/matrix-unroll.lisp).
 
 ## API
 
