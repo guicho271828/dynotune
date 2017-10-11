@@ -73,13 +73,15 @@ See also: hill-climbing."
   (declare (cl:integer restart))
   (declare (boolean keep-results))
   (lambda (function generators)
-    (let (best-result best-params acc)
-      (iter (repeat restart)
-            (for (values result result-parameters result-acc) = (funcall optimizer function generators))
-            (when keep-results
-              (appendf acc result-acc))
-            (when (or (null best-result)
-                      (funcall predicate result best-result))
-              (setf best-result result
-                    best-params result-parameters)))
-      (values best-result best-params acc))))
+    (flet ((mapper (i)
+             (declare (ignorable i))
+             (multiple-value-list (funcall optimizer function generators)))
+           (reducer (a b)
+             (if (funcall predicate (first a) (first b)) a b)))
+      (if keep-results
+          (let* ((acc (lparallel:pmap 'vector #'mapper (iota restart)))
+                 (best (lparallel:preduce #'reducer acc)))
+            (values (first best) (second best)
+                    (lparallel:pmap-reduce #'third #'append acc)))
+          (values-list
+           (lparallel:pmap-reduce #'mapper #'reducer (iota restart)))))))

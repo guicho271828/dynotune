@@ -67,8 +67,10 @@ Currently, the available optimizers focuses on discrete parameters.
 
 + `(random-search max-trials &key [COMMON-KEYS])`
   + Supports all generators.
+  + Supports parallelization by lparallel.
 + `(grid-search &key [COMMON-KEYS])` 
   + Supports all finite generators (non-floats).
+  + Supports parallelization by lparallel.
 + `(hill-climbing &key [COMMON-KEYS])`
   + Evaluate the neighbors of the current state and move to the first neighbor that improves the result.
     Also known as first-choice hill-climbing.
@@ -80,6 +82,7 @@ Currently, the available optimizers focuses on discrete parameters.
   + Iterates over `optimizer` for `restart` times from the
     different random initial parameter. Also known as *Shotgun hill climbing*.
     It is a surprisingly effective algorithm in many cases.
+  + Supports parallelization by lparallel.
 + `(gradient-descent &key [COMMON-KEYS] (dx 0.01) (lr 0.01) (epoch 100) &allow-other-keys)`
   + Supports all continuous generators (floats).
   + Performs gradient descent by x_(n+1) = x_n - γ∇f(x_n) . γ=lr (learning rate).
@@ -100,6 +103,11 @@ We do NOT cover the following algorithms.
   In hyperparameter optimization, there are only one "change" move.
 + CMA-ES is NOT appropriate for "work out of box" situation. It requires lots of hyperparameters by itself.
   Also, implementation cost for me is high...
+
+## Note
+
+The results of the target function is not cached. Thus, it is possible that the
+same parameter is evaluated more than twice. Use [function-cache](http://quickdocs.org/function-cache/).
 
 ## Dependencies
 This library is at least tested on implementation listed below:
