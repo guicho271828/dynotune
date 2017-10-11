@@ -41,7 +41,7 @@
 (defun ^2 (x)
   (* x x))
 
-(defun tune (function &optional method parameters)
+(defun tune (function &optional (method (random-restart)) parameters)
   (unless parameters
     (assert (typep function '(or symbol cons))
             nil "parameters are missing, and ~a is not of type '(or symbol cons). Cannot guess the input region!"
@@ -52,6 +52,6 @@
            (setf parameters args-types)))
       (match-error ()
         (error "could not get the parameter information from the function!"))))
-
+  
   (funcall method function (mapcar #'parse-generator parameters)))
 
