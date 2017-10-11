@@ -168,12 +168,11 @@ The current index should be computed manually, which is base + offset.
             internal-time-units-per-second)))))
 
 (function-cache:defcached unrolled-gemm-middle-prod (ui uk uj)
-  (let ((fn (make-unrolled-gemm-middle-prod ui uk uj)))
-    (let ((result (benchmark
-                    (funcall fn
-                             (make-matrix 512 1024)
-                             (make-matrix 1024 512)
-                             (make-matrix 512 512)))))
+  (let ((fn (make-unrolled-gemm-middle-prod ui uk uj))
+        (a (make-matrix 512 1024))
+        (b (make-matrix 1024 512))
+        (c (make-matrix 512 512)))
+    (let ((result (benchmark (funcall fn a b c))))
       (print (list ui uk uj :-> result))
       result)))
 
