@@ -36,32 +36,32 @@ Primary API is through a function `tune`.
 local-search, etc. (we describe it below)
 
 `parameters` is a list of type specifiers, one for each parameter.
-We parse and retrieve the
-meta-information in these parameters
-using [TYPE-R](https://github.com/guicho271828/type-r), so it supports a
-significant subset of standard type specifiers in common lisp.
+`parameters` is optional when the compiler can deduce the argument types of the `function`.
+`ftype` declaration is useful on SBCL.
 
 + `short/double/single/long-float`, `integer`
 + Compound type specifiers like `(double-float -5.0 5.0)`, `(integer -1 10)`, `(mod 5)`, `(unsigned-byte 5)`
 
-Additionally, we accept the following specifiers for discrete optimization:
+Additionally, we accept the following specifiers for discrete optimization.
+These affect the state neighborhoods.
 
-+ `(categorical :a :b :c)` == `(member :a :b :c)` --- a finite set.
-+ `(ordinary :first :second :third)` --- implies that the set has an ordering.
-+ `(interval :mon :tue :wed :thu :fri :sat :sun)` --- in addition to being an
-  ordinary variable, it implies that the distance between each element is identical.
++ `(categorical :a :b :c)` == `(member :a :b :c)`
+    + A finite set. The neighbors of a value consists of all other elements.
++ `(ordinary :first :second :third)`
+    + Implies that the set has an ordering. The neighbors of a value consists of adjacent elements.
++ `(interval :mon :tue :wed :thu :fri :sat :sun)`
+    + In addition to being an ordinary variable, it implies that the intervals
+      between elements are identical. It makes the "difference" meaningful, which
+      can be exploited by some algorithms.
 
 We generate a generator instance for each parameter from the given type specifier.
 Each optimizer supports a limited class of generator.
 For example, gradient descent works only for floats.
 
-`parameters` is optional when the compiler can deduce the argument types of the `function`.
-`ftype` information is quite useful because on SBCL it can retrieve the type information.
-
-
 ## Available optimizers
 
 Currently, the available optimizers focuses on discrete parameters.
+The default strategy is random-restart hill climbing.
 
 `[COMMON-KEYS]` denotes keyword arguments `(predicate #'<) keep-results`.
 
