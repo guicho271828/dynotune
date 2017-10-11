@@ -46,9 +46,9 @@ Additionally, we accept the following specifiers for discrete optimization.
 These affect the state neighborhoods.
 
 + `(categorical :a :b :c)` == `(member :a :b :c)`
-    + A finite set. The neighbors of a value consists of all other elements.
+    + A finite set. The neighborhood of a value consists of all other elements.
 + `(ordinary :first :second :third)`
-    + Implies that the set has an ordering. The neighbors of a value consists of adjacent elements.
+    + Implies that the set has an ordering. The neighborhood of a value consists of the adjacent elements.
 + `(interval :mon :tue :wed :thu :fri :sat :sun)`
     + In addition to being an ordinary variable, it implies that the intervals
       between elements are identical. It makes the "difference" meaningful, which
