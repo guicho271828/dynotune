@@ -59,9 +59,14 @@
 (defmethod neighbor ((set categorical-member) current)
   (all set))
 (defmethod neighbor ((set ordinal-member) current)
-  (with-slots (objects) set
-    (let ((pos (position current objects)))
-      (list (elt objects (1- pos)) (elt objects (1+ pos))))))
+  (with-slots (low high objects) set
+    (let ((acc nil)
+          (pos (position current objects)))
+      (when (<= (1+ pos) high)
+        (push (elt objects (1+ pos)) acc))
+      (when (<= low (1- pos))
+        (push (elt objects (1- pos)) acc))
+      acc)))
 (defmethod neighbor ((set integer) (current cl:integer))
   (with-slots (low high) set
     (let (acc)
@@ -99,9 +104,9 @@
     ((list* (or 'cl:member 'categorical) objects) ;member is a synonym for categorical
      (make-instance 'categorical-member :objects objects))
     ((list* 'ordinal objects)
-     (make-instance 'ordinal-member :objects objects))
+     (make-instance 'ordinal-member :objects objects :low 0 :high (1- (length objects))))
     ((list* 'interval objects)
-     (make-instance 'interval-member :objects objects))
+     (make-instance 'interval-member :objects objects :low 0 :high (1- (length objects))))
     (_
      (error "Failed to parse the generator specifier form:~% ~a~%
 should be of integer, short/single/double/long-float, member, categorical, ordinal, interval."
