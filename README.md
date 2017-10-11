@@ -101,6 +101,11 @@ We do NOT cover the following algorithms.
 + CMA-ES is NOT appropriate for "work out of box" situation. It requires lots of hyperparameters by itself.
   Also, implementation cost for me is high...
 
+## Note
+
+The results of the target function is not cached. Thus, it is possible that the
+same parameter is evaluated more than twice. Use [function-cache](http://quickdocs.org/function-cache/).
+
 ## Dependencies
 This library is at least tested on implementation listed below:
 
