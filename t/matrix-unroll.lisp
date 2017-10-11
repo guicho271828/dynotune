@@ -161,9 +161,9 @@ The current index should be computed manually, which is base + offset.
 
 (defmacro benchmark (&body body)
   (with-gensyms (start end)
-    `(let ((,start (get-internal-run-time)))
+    `(let ((,start (get-internal-real-time)))
        ,@body
-       (let ((,end (get-internal-run-time)))
+       (let ((,end (get-internal-real-time)))
          (/ (float (- ,end ,start))
             internal-time-units-per-second)))))
 
