@@ -31,7 +31,8 @@
    #:cma-es
    #:de
    #:pso
-   #:tabu))
+   #:tabu
+   #:gradient-descent))
 (in-package :dynotune)
 
 ;; blah blah blah.

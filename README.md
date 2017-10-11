@@ -64,26 +64,30 @@ Currently, the available optimizers focuses on discrete parameters.
 `[COMMON-KEYS]` denotes keyword arguments `(predicate #'<) keep-results`.
 
 + `(random-search max-trials &key [COMMON-KEYS])`
-  + supports all generators.
+  + Supports all generators.
 + `(grid-search &key [COMMON-KEYS])` 
-  + supports all finite generators (non-floats).
+  + Supports all finite generators (non-floats).
 + `(hill-climbing &key [COMMON-KEYS])`
   + Evaluate the neighbors of the current state and move to the first neighbor that improves the result.
     Also known as first-choice hill-climbing.
-  + supports all finite generators (non-floats).
+  + Supports all finite generators (non-floats).
 + `(hill-climbing2 &key [COMMON-KEYS])`
   + Evaluate ALL neighbors of the current state and move to the BEST neighbor.
-  + supports all finite generators (non-floats).
+  + Supports all finite generators (non-floats).
 + `(random-restart &key [COMMON-KEYS] (restart 10) (optimizer (hill-climbing)))`
-    + Iterates over `optimizer` for `restart` times from the
-      different random initial parameter. Also known as *Shotgun hill climbing*.
-      It is a surprisingly effective algorithm in many cases.
+  + Iterates over `optimizer` for `restart` times from the
+    different random initial parameter. Also known as *Shotgun hill climbing*.
+    It is a surprisingly effective algorithm in many cases.
++ `(gradient-descent &key [COMMON-KEYS] (dx 0.01) (lr 0.01) (epoch 100) &allow-other-keys)`
+  + Supports all continuous generators (floats).
+  + Performs gradient descent by x_(n+1) = x_n - γ∇f(x_n) . γ=lr (learning rate).
+  + Since the function is black-box, gradient is computed numerically.
+  + The default performance is likely not good.
 
 Work in progress (should be implemented in a few days, send me a message if I forgot this --- 2017/10/11)
 
 + Differential Evolution
 + Simulated Annealing
-+ Gradient Descent
 + tabu-search
 + GA and real-valued GA
 + PSO and ACO

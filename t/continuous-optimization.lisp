@@ -195,5 +195,6 @@
                 schaffer-n4
                 styblinski-tang))
     (print fn)
-    (dolist (optimizer (list (random-search 1000000)))
-      (finishes (print (multiple-value-list (tune fn optimizer)))))))
+    (dolist (optimizer (list (random-search 1000000)
+                             (gradient-descent)))
+      (finishes (print (subseq (multiple-value-list (tune fn optimizer)) 0 2))))))
