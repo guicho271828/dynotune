@@ -16,8 +16,8 @@ TEST> (declaim (ftype (function ((double-float -1d0 1d0)) (double-float -1d0 1d0
 TEST> (defun ^2 (x) (* x x))
 |^2|
 TEST> (tune '^2 (random-search 100))
-2.9022303484219113d-4
-(0.017035933635765055d0)
+2.9022303484219113d-4      ; the value of (^2 x)
+(0.017035933635765055d0)   ; the value of x
 NIL
 TEST> 
 ```
@@ -59,7 +59,9 @@ For example, gradient descent works only for floats.
 
 ## Available optimizers
 
-`COMMON-KEYS` denotes keyword arguments `(predicate #'<) keep-results`.
+Currently, the available optimizers focuses on discrete parameters.
+
+`[COMMON-KEYS]` denotes keyword arguments `(predicate #'<) keep-results`.
 
 + `(random-search max-trials &key [COMMON-KEYS])`
   + supports all generators.
