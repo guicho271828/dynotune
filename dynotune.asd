@@ -18,12 +18,10 @@
  :pathname "src/"
  :components ((:file "package")
               (:file "generator")
-              (:file "optimizers/differential-evolution")
-              (:file "optimizers/grid-search")
-              (:file "optimizers/hill-climbing")
-              (:file "optimizers/particle-swarm")
-              (:file "optimizers/random-search")
-              (:file "optimizers/simulated-annealing")
-              (:file "optimizers/tabu"))
+              (:module "optimizers"
+               :components ((:file "gradient-descent")
+                            (:file "grid-search")
+                            (:file "hill-climbing")
+                            (:file "random-search"))))
  :description "Automated parameter tuner for CL"
  :in-order-to ((test-op (test-op :dynotune.test))))

@@ -1,4 +1,6 @@
 
 ((:package)
- (:rest))
+ (:rest)
+ (:dir "optimizers"
+       (:rest :recursive nil)))
 
