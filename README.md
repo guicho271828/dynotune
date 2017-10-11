@@ -83,7 +83,7 @@ Currently, the available optimizers focuses on discrete parameters.
 + `(gradient-descent &key [COMMON-KEYS] (dx 0.01) (lr 0.01) (epoch 100) &allow-other-keys)`
   + Supports all continuous generators (floats).
   + Performs gradient descent by x_(n+1) = x_n - γ∇f(x_n) . γ=lr (learning rate).
-  + Since the function is black-box, gradient is computed numerically.
+  + Since the target function is a black-box, its gradient is computed numerically.
   + The default performance is likely not good.
 
 Work in progress (should be implemented in a few days, send me a message if I forgot this --- 2017/10/11)
