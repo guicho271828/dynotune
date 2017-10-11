@@ -197,4 +197,7 @@
     (print fn)
     (dolist (optimizer (list (random-search 1000000)
                              (gradient-descent)))
-      (finishes (print (subseq (multiple-value-list (tune fn optimizer)) 0 2))))))
+      (finishes
+        (handler-case (print (subseq (multiple-value-list (tune fn optimizer)) 0 2))
+          (arithmetic-error ()
+            (print :arithmetic-error)))))))
