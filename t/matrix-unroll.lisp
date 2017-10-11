@@ -77,17 +77,26 @@ The current index should be computed manually, which is base + offset.
       (disassemble fn))
     fn))
 
-(defvar *a* (make-matrix 1024 2048))
-(defvar *b* (make-matrix 2048 1024))
-(defvar *c* (make-matrix 1024 1024))
+(defparameter *a* (make-matrix 512 1024))
+(defparameter *b* (make-matrix 1024 512))
+(defparameter *c* (make-matrix 512 512))
+
+(defmacro benchmark (&body body)
+  (with-gensyms (start end)
+    `(let ((,start (get-internal-real-time)))
+       ,@body
+       (let ((,end (get-internal-real-time)))
+         (/ (float (- ,end ,start))
+            internal-time-units-per-second)))))
 
 ;;; simple loops
 
 (defun gemm-inner-prod (a b c)
-  "ijk loop. 20sec"
+  "ijk loop. 6.712sec"
   (declare (optimize (speed 3) (debug 0) (safety 0) (space 0)))
-  (declare (type (matrix) a b c))
-  ;; (N,M)x(M,L)=(N,L)
+  (declare (type (matrix 512 1024) a))
+  (declare (type (matrix 1024 512) b))
+  (declare (type (matrix 512 512) c))
   (let ((N (array-dimension a 0))       ;i
         (M (array-dimension a 1))       ;k
         (L (array-dimension b 1)))      ;j
@@ -101,10 +110,11 @@ The current index should be computed manually, which is base + offset.
           (setf (aref c i j) tmp-c))))))
 
 (defun gemm-outer-prod (a b c)
-  "kji loop. 98sec"
+  "kji loop. 7.181sec"
   (declare (optimize (speed 3) (debug 0) (safety 0) (space 0)))
-  (declare (type (matrix) a b c))
-  ;; (N,M)x(M,L)=(N,L)
+  (declare (type (matrix 512 1024) a))
+  (declare (type (matrix 1024 512) b))
+  (declare (type (matrix 512 512) c))
   (let ((N (array-dimension a 0))       ;i
         (M (array-dimension a 1))       ;k
         (L (array-dimension b 1)))      ;j
@@ -121,10 +131,11 @@ The current index should be computed manually, which is base + offset.
                      tmp-b))))))))
 
 (defun gemm-middle-prod (a b c)
-  "ikj loop. 8.9sec"
+  "ikj loop. 1.176sec"
   (declare (optimize (speed 3) (debug 0) (safety 0) (space 0)))
-  (declare (type (matrix) a b c))
-  ;; (N,M)x(M,L)=(N,L)
+  (declare (type (matrix 512 1024) a))
+  (declare (type (matrix 1024 512) b))
+  (declare (type (matrix 512 512) c))
   (let ((N (array-dimension a 0))       ;i
         (M (array-dimension a 1))       ;k
         (L (array-dimension b 1)))      ;j
@@ -138,48 +149,46 @@ The current index should be computed manually, which is base + offset.
             (incf (aref c i j)
                   (* tmp-a (aref b k j)))))))))
 
+(test simple-gemm
+  (finishes (print (benchmark (gemm-inner-prod *a* *b* *c*))))
+  (finishes (print (benchmark (gemm-outer-prod *a* *b* *c*))))
+  (finishes (print (benchmark (gemm-middle-prod *a* *b* *c*)))))
+
 ;;; unrolled loops
 
-(defun make-unrolled-gemm-middle-prod (ui uk uj)
+(defun make-unrolled-gemm-middle-prod (N M L ui uk uj)
+  (assert (zerop (rem N ui)))
+  (assert (zerop (rem M uk)))
+  (assert (zerop (rem L uj)))
   `(lambda (a b c)
      (declare (optimize (speed 3) (debug 0) (safety 0) (space 0)))
-     (declare (type (matrix) a b c))
+     (declare (type (matrix ,N ,M) a))
+     (declare (type (matrix ,M ,L) b))
+     (declare (type (matrix ,N ,L) c))
      #+sbcl
      (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
-     (let ((N (array-dimension a 0))       ;i
-           (M (array-dimension a 1))       ;k
-           (L (array-dimension b 1)))      ;j
-       (dotimes-unroll (bi oi N ,ui)
-         (let ((i (+ bi oi)))
-           (dotimes-unroll (bj oj L ,uj)
-             (setf (aref c i (+ bj oj)) 0.0d0))
-           (dotimes-unroll (bk ok M ,uk)
-             (let* ((k (+ bk ok))
-                    (tmp-a (aref a i k)))
-               (declare (double-float tmp-a))
-               (dotimes-unroll (bj oj L ,uj)
-                 (let ((j (+ bj oj)))
-                   (incf (aref c i j)
-                         (* tmp-a (aref b k j))))))))))))
+     (dotimes-unroll (bi oi ,N ,ui)
+       (let ((i (+ bi oi)))
+         (dotimes-unroll (bj oj ,L ,uj)
+           (setf (aref c i (+ bj oj)) 0.0d0))
+         (dotimes-unroll (bk ok ,M ,uk)
+           (let* ((k (+ bk ok))
+                  (tmp-a (aref a i k)))
+             (declare (double-float tmp-a))
+             (dotimes-unroll (bj oj ,L ,uj)
+               (let ((j (+ bj oj)))
+                 (incf (aref c i j)
+                       (* tmp-a (aref b k j)))))))))))
 
-(defmacro benchmark (&body body)
-  (with-gensyms (start end)
-    `(let ((,start (get-internal-real-time)))
-       ,@body
-       (let ((,end (get-internal-real-time)))
-         (/ (float (- ,end ,start))
-            internal-time-units-per-second)))))
 
 (function-cache:defcached unrolled-gemm-middle-prod (ui uk uj)
-  (let ((fn (compile* (make-unrolled-gemm-middle-prod ui uk uj)))
+  (let ((fn (compile* (make-unrolled-gemm-middle-prod 512 1024 512 ui uk uj)))
         (a (make-matrix 512 1024))
         (b (make-matrix 1024 512))
         (c (make-matrix 512 512)))
     (let ((result (benchmark (funcall fn a b c))))
       (print (list ui uk uj :-> result))
       result)))
-
-;;; test
 
 (test matrix-unroll
   (finishes
@@ -191,47 +200,123 @@ The current index should be computed manually, which is base + offset.
               (ordinal 1 2 4)
               (ordinal 1 2 4 8)))))))
 
-;; TEST> (tune 'unrolled-gemm-middle-prod
-;;             'random-restart
-;;             '((ordinal 1 2 4)
-;;               (ordinal 1 2 4)
-;;               (ordinal 1 2 4 8)))
-;; 
-;; 
-;; 
-;; (2 1 4 :-> 14.864) (1 1 2 :-> 5.792) (2 2 4 :-> 22.452) 
-;; (4 2 2 :-> 16.832) 
-;; (4 4 1 :-> 13.328) 
-;; (1 1 4 :-> 7.34) 
-;; (2 1 2 :-> 16.068) 
-;; (2 1 8 :-> 33.708) 
-;; (2 2 2 :-> 24.788) 
-;; (1 2 4 :-> 32.888) 
-;; (2 4 1 :-> 22.88) 
-;; (1 1 8 :-> 8.176) 
-;; (1 2 2 :-> 23.336) 
-;; (1 2 4 :-> 29.704) 
-;; (4 1 2 :-> 11.156) 
-;; (4 2 1 :-> 5.752) 
-;; (1 1 1 :-> 8.444) 
-;; (1 1 1 :-> 8.88) 
-;; (2 2 1 :-> 7.84) 
-;; (4 2 4 :-> 22.892) 
-;; (1 2 8 :-> 20.544) 
-;; (4 1 1 :-> 28.564) 
-;; (4 1 1 :-> 21.456) 
-;; (4 1 4 :-> 7.096) 
-;; (4 4 8 :-> 12.852) 
-;; (2 2 8 :-> 11.876) 
-;; (4 1 8 :-> 12.036) 
-;; (2 4 8 :-> 10.308) 
-;; (4 2 8 :-> 10.532) 
-;; (1 4 8 :-> 7.316) 
-;; (1 4 4 :-> 5.144) 
-;; (2 4 4 :-> 5.024) 
-;; (4 4 4 :-> 4.92) 
-;; (4 4 2 :-> 3.728) 
-;; (2 4 2 :-> 3.74) 
-;; 3.728
-;; (4 4 2)
-;; NIL
+;; 0.636
+;; (4 1 8)
+
+;;; blocked loops
+
+(defun make-blocked-gemm-middle-prod (N M L iw kw jw)
+  (assert (zerop (rem N iw)))
+  (assert (zerop (rem M kw)))
+  (assert (zerop (rem L jw)))
+  `(lambda (a b c)
+     (declare (optimize (speed 3) (debug 0) (safety 0) (space 0)))
+     (declare (type (matrix ,N ,M) a))
+     (declare (type (matrix ,M ,L) b))
+     (declare (type (matrix ,N ,L) c))
+     #+sbcl
+     (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
+     (loop for ib below ,N by ,iw do
+          (loop for kb below ,L by ,kw do
+               (loop for jb below ,M by ,jw do
+                    (loop for i from ib below (+ ib ,iw) do
+                         (loop for j from jb below (+ jb ,jw) do
+                              (setf (aref c i j) 0.0d0))
+                         (loop for k from kb below (+ kb ,kw) do
+                              (let ((tmp-a (aref a i k)))
+                                (declare (double-float tmp-a))
+                                (loop for j from jb below (+ jb ,jw) do
+                                     (incf (aref c i j)
+                                           (* tmp-a (aref b k j))))))))))))
+
+(function-cache:defcached blocked-gemm-middle-prod (iw kw jw)
+  (let ((fn (compile* (make-blocked-gemm-middle-prod 512 1024 512 iw kw jw)))
+        (a (make-matrix 512 1024))
+        (b (make-matrix 1024 512))
+        (c (make-matrix 512 512)))
+    (let ((result (benchmark (funcall fn a b c))))
+      (print (list iw kw jw :-> result))
+      result)))
+
+(test matrix-blocked
+  (finishes
+    (print
+     (multiple-value-list
+      (tune 'blocked-gemm-middle-prod
+            'random-restart
+            '((ordinal 2 4 8 16)
+              (ordinal 2 4 8 16)
+              (ordinal 2 4 8 16)))))))
+
+;; 0.811
+;; (2 8 8)
+
+;;; blocked + unrolled
+
+(defun make-unrolled+blocked-gemm-middle-prod (N M L iw kw jw uj) ; ui uk
+  (assert (zerop (rem N iw)))
+  (assert (zerop (rem M kw)))
+  (assert (zerop (rem L jw)))
+  ;; (assert (zerop (rem iw ui)))
+  ;; (assert (zerop (rem kw uk)))
+  (assert (zerop (rem jw uj)))
+  `(lambda (a b c)
+     (declare (optimize (speed 3) (debug 0) (safety 0) (space 0)))
+     (declare (type (matrix ,N ,M) a))
+     (declare (type (matrix ,M ,L) b))
+     (declare (type (matrix ,N ,L) c))
+     #+sbcl
+     (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
+     
+     (loop for ib below ,N by ,iw do
+          (loop for kb below ,L by ,kw do
+               (loop for jb below ,M by ,jw do
+                    (loop for i from ib below (+ ib ,iw)
+                       do
+                         (loop
+                            with j = jb
+                            repeat ,(/ jw uj)
+                            do
+                              (progn
+                                ,@(iter (for jo below uj)
+                                        (unless (first-iteration-p)
+                                          (collecting '(incf j)))
+                                        (collecting
+                                         `(setf (aref c i j) 0.0d0)))))
+                       do
+                         (loop for k from kb below (+ kb ,kw) do
+                              (let ((tmp-a (aref a i k)))
+                                (declare (double-float tmp-a))
+                                (loop
+                                   with j = jb
+                                   repeat ,(/ jw uj)
+                                   do
+                                     (progn
+                                       ,@(iter (for jo below uj)
+                                               (unless (first-iteration-p)
+                                                 (collecting '(incf j)))
+                                               (collecting
+                                                `(incf (aref c i j) (* tmp-a (aref b k j)))))))))))))))
+
+(function-cache:defcached unrolled+blocked-gemm-middle-prod (iw kw jw uj)
+  (let ((fn (compile* (make-unrolled+blocked-gemm-middle-prod 512 1024 512 iw kw jw uj)))
+        (a (make-matrix 512 1024))
+        (b (make-matrix 1024 512))
+        (c (make-matrix 512 512)))
+    (let ((result (benchmark (funcall fn a b c))))
+      (print (list iw kw jw uj :-> result))
+      result)))
+
+(test matrix-unrolled+blocked
+  (finishes
+    (print
+     (multiple-value-list
+      (tune 'unrolled+blocked-gemm-middle-prod
+            'random-restart
+            '((ordinal 8 16 32)
+              (ordinal 8 16 32)
+              (ordinal 8 16 32)
+              (ordinal 1 2 4 8)))))))
+
+;; 0.691
+;; (8 8 16 4)
