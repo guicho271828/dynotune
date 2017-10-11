@@ -42,7 +42,7 @@
 (defun ^2 (x)
   (* x x))
 
-(defun tune (function &optional (method (random-restart)) parameters)
+(defun tune (function &optional (optimizer 'random-restart) parameters)
   (unless parameters
     (assert (typep function '(or symbol cons))
             nil "parameters are missing, and ~a is not of type '(or symbol cons). Cannot guess the input region!"
@@ -54,5 +54,8 @@
       (match-error ()
         (error "could not get the parameter information from the function!"))))
   
-  (funcall method function (mapcar #'parse-generator parameters)))
+  (when (symbolp optimizer)
+    (setf optimizer (funcall optimizer)))
+  
+  (funcall optimizer function (mapcar #'parse-generator parameters)))
 

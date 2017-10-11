@@ -47,10 +47,10 @@ More examples are in `t/`.
 
 Primary API is through a function `tune`.
 
-    (tune function &optional method parameters)
+    (tune function &optional optimizer parameters)
 
-`method` is an instance of an optimizer, such as random-search, GA,
-local-search, etc. (we describe it below)
+`optimizer` is an instance of an optimizer, such as random-search, GA,
+local-search, etc. (we describe it later), or a function name of an optimizer.
 
 `parameters` is a list of type specifiers, one for each parameter.
 `parameters` is optional when the compiler can deduce the argument types of the `function`.
