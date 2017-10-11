@@ -32,7 +32,8 @@
    #:de
    #:pso
    #:tabu
-   #:gradient-descent))
+   #:gradient-descent
+   #:converged))
 (in-package :dynotune)
 
 ;; blah blah blah.
