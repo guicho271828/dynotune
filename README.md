@@ -88,10 +88,14 @@ Work in progress (should be implemented in a few days, send me a message if I fo
 
 + Differential Evolution
 + Simulated Annealing
-+ tabu-search
 + GA and real-valued GA
 + PSO and ACO
 + ~~CMA-ES~~ --- is NOT appropriate for "work out of box" situation. It requires lots of hyperparameters by itself.
+
+We do NOT cover the following algorithms because they are algorithms for combinatorial problems.
+They assume some constraints between the variables.
+
++ tabu-search
 
 ## Dependencies
 This library is at least tested on implementation listed below:
