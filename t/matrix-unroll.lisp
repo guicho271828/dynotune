@@ -137,27 +137,26 @@ The current index should be computed manually, which is base + offset.
 ;;; unrolled loops
 
 (defun make-unrolled-gemm-middle-prod (ui uk uj)
-  (compile*
-   `(lambda (a b c)
-      (declare (optimize (speed 3) (debug 0) (safety 0) (space 0)))
-      (declare (type (matrix) a b c))
-      #+sbcl
-      (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
-      (let ((N (array-dimension a 0))       ;i
-            (M (array-dimension a 1))       ;k
-            (L (array-dimension b 1)))      ;j
-        (dotimes-unroll (bi oi N ,ui)
-          (let ((i (+ bi oi)))
-            (dotimes-unroll (bj oj L ,uj)
-              (setf (aref c i (+ bj oj)) 0.0d0))
-            (dotimes-unroll (bk ok M ,uk)
-              (let* ((k (+ bk ok))
-                     (tmp-a (aref a i k)))
-                (declare (double-float tmp-a))
-                (dotimes-unroll (bj oj L ,uj)
-                  (let ((j (+ bj oj)))
-                    (incf (aref c i j)
-                          (* tmp-a (aref b k j)))))))))))))
+  `(lambda (a b c)
+     (declare (optimize (speed 3) (debug 0) (safety 0) (space 0)))
+     (declare (type (matrix) a b c))
+     #+sbcl
+     (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
+     (let ((N (array-dimension a 0))       ;i
+           (M (array-dimension a 1))       ;k
+           (L (array-dimension b 1)))      ;j
+       (dotimes-unroll (bi oi N ,ui)
+         (let ((i (+ bi oi)))
+           (dotimes-unroll (bj oj L ,uj)
+             (setf (aref c i (+ bj oj)) 0.0d0))
+           (dotimes-unroll (bk ok M ,uk)
+             (let* ((k (+ bk ok))
+                    (tmp-a (aref a i k)))
+               (declare (double-float tmp-a))
+               (dotimes-unroll (bj oj L ,uj)
+                 (let ((j (+ bj oj)))
+                   (incf (aref c i j)
+                         (* tmp-a (aref b k j))))))))))))
 
 (defmacro benchmark (&body body)
   (with-gensyms (start end)
@@ -168,7 +167,7 @@ The current index should be computed manually, which is base + offset.
             internal-time-units-per-second)))))
 
 (function-cache:defcached unrolled-gemm-middle-prod (ui uk uj)
-  (let ((fn (make-unrolled-gemm-middle-prod ui uk uj))
+  (let ((fn (compile* (make-unrolled-gemm-middle-prod ui uk uj)))
         (a (make-matrix 512 1024))
         (b (make-matrix 1024 512))
         (c (make-matrix 512 512)))
