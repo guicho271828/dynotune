@@ -68,10 +68,11 @@ See also: hill-climbing."
             (while (or (null old-best) (funcall predicate best-result old-best))))
       (values best-result best-params acc))))
 
-(defun random-restart (&rest args &key (predicate #'<) keep-results (restart 10)
-                                    (optimizer (apply #'hill-climbing args)))
+(defun random-restart (&rest args &key (predicate #'<) keep-results (restart 10) (optimizer 'hill-climbing))
   (declare (cl:integer restart))
   (declare (boolean keep-results))
+  (when (symbolp optimizer)
+    (setf optimizer (apply optimizer args)))
   (lambda (function generators)
     (flet ((mapper (i)
              (declare (ignorable i))
