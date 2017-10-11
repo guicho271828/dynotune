@@ -90,12 +90,14 @@ Work in progress (should be implemented in a few days, send me a message if I fo
 + Simulated Annealing
 + GA and real-valued GA
 + PSO and ACO
-+ ~~CMA-ES~~ --- is NOT appropriate for "work out of box" situation. It requires lots of hyperparameters by itself.
 
-We do NOT cover the following algorithms because they are algorithms for combinatorial problems.
-They assume some constraints between the variables.
+We do NOT cover the following algorithms.
 
-+ tabu-search
++ tabu-search, because it is an algorithm for combinatorial problems. They
+  assume some constraints between the variables, and requires a set of "move"s as an input.
+  In hyperparameter optimization, there are only one "change" move.
++ CMA-ES is NOT appropriate for "work out of box" situation. It requires lots of hyperparameters by itself.
+  Also, implementation cost for me is high...
 
 ## Dependencies
 This library is at least tested on implementation listed below:
