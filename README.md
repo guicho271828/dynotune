@@ -4,6 +4,8 @@
 This library provides an easy-to-use interface to black-box optimization algorithms.
 
 + Intended for tuning the meta-parameter of a particular function/solver/system.
+    + NOT intended for finding the optimal solution of a small numerical function.
+      Assumes each evaluation is expensive.
 + Focuses on the usability and should "work out of the box".
 + It should also support many algorithms, but it should not force the users to understand them.
 + Although the tuner should be interruptible and multi-threaded, this depends on the implementation of each optimizer.
