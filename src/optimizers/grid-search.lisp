@@ -11,12 +11,12 @@
       
       (let* ((futures (apply #'map-product
                              (lambda (&rest parameters)
-                               (lparallel:future
+                               (future
                                  (let ((result (apply function parameters)))
                                    (list result parameters))))
                              (mapcar #'all generators)))
-             (acc (mapcar #'lparallel:force futures))
-             (best (lparallel:preduce #'reducer acc)))
+             (acc (mapcar #'force futures))
+             (best (preduce #'reducer acc)))
         (if keep-results
             (values (first best) (second best) acc)
             (values (first best) (second best)))))))

@@ -7,7 +7,8 @@
 (defpackage dynotune
   (:use :cl :iterate :alexandria :trivia
         ;; :introspect-environment
-        :type-r)
+        :type-r
+        :lparallel)
   (:shadow :set
            :double-float
            :single-float

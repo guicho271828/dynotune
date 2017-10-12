@@ -8,16 +8,17 @@
   (lambda (function generators)
     (flet ((mapper (i)
              (declare (ignorable i))
-             (let* ((parameters (mapcar #'generate generators))
-                    (result (apply function parameters)))
-               (list result parameters)))
+             (future
+              (let* ((parameters (mapcar #'generate generators))
+                     (result (apply function parameters)))
+                (list result parameters))))
            (reducer (a b)
              (if (funcall predicate (first a) (first b)) a b)))
       (if keep-results
-          (let* ((acc (lparallel:pmap 'vector #'mapper (iota max-trials)))
-                 (best (lparallel:preduce #'reducer acc)))
+          (let* ((acc (mapcar #'force (mapcar #'mapper (iota max-trials))))
+                 (best (reduce #'reducer acc)))
             (values (first best) (second best) acc))
           
           (values-list
-           (lparallel:pmap-reduce #'mapper #'reducer (iota max-trials)))))))
+           (reduce #'reducer (mapcar #'force (mapcar #'mapper (iota max-trials)))))))))
 

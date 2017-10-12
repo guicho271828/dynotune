@@ -76,13 +76,14 @@ See also: hill-climbing."
   (lambda (function generators)
     (flet ((mapper (i)
              (declare (ignorable i))
-             (multiple-value-list (funcall optimizer function generators)))
+             (future
+              (multiple-value-list (funcall optimizer function generators))))
            (reducer (a b)
              (if (funcall predicate (first a) (first b)) a b)))
       (if keep-results
-          (let* ((acc (lparallel:pmap 'vector #'mapper (iota restart)))
-                 (best (lparallel:preduce #'reducer acc)))
+          (let* ((acc (mapcar #'force (mapcar #'mapper (iota restart))))
+                 (best (reduce #'reducer acc)))
             (values (first best) (second best)
-                    (lparallel:pmap-reduce #'third #'append acc)))
+                    (reduce #'append acc :key #'third)))
           (values-list
-           (lparallel:pmap-reduce #'mapper #'reducer (iota restart)))))))
+           (reduce #'reducer (mapcar #'force (mapcar #'mapper (iota restart)))))))))
